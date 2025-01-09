@@ -1,26 +1,115 @@
 import 'package:flutter/material.dart';
+import 'package:search_devs/ui/components/search_button.dart';
+import 'package:search_devs/ui/responsive_layout/responsive_layout.dart';
 import 'package:search_devs/utils/constants/theme.dart';
 
 class SearchForm extends StatelessWidget {
-  const SearchForm({super.key});
+  final bool isDevView;
+
+  const SearchForm({
+    super.key,
+    required this.isDevView,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: AppTheme.mainBlackBlue,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppTheme.mainBlackBlue, width: 1),
-            borderRadius: BorderRadius.circular(4)
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        labelStyle: const TextStyle(color: AppTheme.mainBlackBlue),
-        hintText: 'Search',
-        labelText: 'Search',
-        prefixIcon: const Icon(Icons.search, size: 24),
-      ),
-    );
+    return ResponsiveLayout.isPhone(context)
+        ? TextFormField(
+            cursorColor: AppTheme.mainMediumGrey,
+            decoration: InputDecoration(
+              disabledBorder: const OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: AppTheme.mainMediumGrey, width: 1),
+              ),
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                      color: AppTheme.mainMediumGrey, width: 1),
+                  borderRadius: BorderRadius.circular(4)),
+              border: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: AppTheme.mainMediumGrey, width: 1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: AppTheme.mainMediumGrey,
+                    width: 1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              labelStyle: const TextStyle(color: AppTheme.mainMediumGrey),
+              hintText: 'Search',
+              hintStyle: const TextStyle(color: AppTheme.mainMediumGrey),
+              labelText: 'Search',
+              prefixIcon: const Icon(Icons.search, size: 24, color: AppTheme.mainMediumGrey),
+            ),
+          )
+        : Flexible(
+            child: Row(
+              mainAxisAlignment: isDevView
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 592),
+                    child: TextFormField(
+                      cursorColor: isDevView
+                          ? AppTheme.mainPurple
+                          : AppTheme.mainMediumGrey,
+                      decoration: InputDecoration(
+                        disabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppTheme.mainMediumGrey, width: 1),
+                        ),
+                        isDense: true,
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 14.0),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: isDevView
+                                  ? AppTheme.mainPurple
+                                  : AppTheme.mainMediumGrey,
+                              width: 1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: isDevView
+                                  ? AppTheme.mainPurple
+                                  : AppTheme.mainMediumGrey,
+                              width: 1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: AppTheme.mainMediumGrey, width: 1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(
+                            fontSize: 18, color: AppTheme.mainMediumGrey),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          size: 26,
+                          color: AppTheme.mainMediumGrey,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 32,
+                ),
+                Visibility(
+                  visible: !isDevView,
+                  child: SearchButton(
+                    onTap: () {},
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }

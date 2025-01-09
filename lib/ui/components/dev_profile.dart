@@ -7,12 +7,13 @@ class DevProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Row(
-      spacing: 16,
       children: [
         CircleAvatar(
           radius: 24,
-          // backgroundImage: NetworkImage('url'),
           backgroundColor: Colors.blue,
+        ),
+        SizedBox(
+          width: 16,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

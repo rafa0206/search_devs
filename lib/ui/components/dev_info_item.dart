@@ -6,22 +6,23 @@ class DevInfoItem extends StatelessWidget {
   final String textItem;
   final double? iconSize;
 
-  const DevInfoItem({
-    required this.iconData,
-    required this.textItem,
-    this.iconSize,
-    super.key
-  });
+  const DevInfoItem(
+      {required this.iconData,
+      required this.textItem,
+      this.iconSize,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 8,
       children: [
         Icon(
           iconData,
           size: iconSize ?? 20,
           color: AppTheme.mainGrey,
+        ),
+        const SizedBox(
+          width: 8,
         ),
         Text(
           textItem,
