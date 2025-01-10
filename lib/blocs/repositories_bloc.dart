@@ -8,11 +8,11 @@ class RepositoriesBloc extends Bloc<RepositoriesEvent, RepositoriesState> {
 
   RepositoriesBloc(this._repositoriesRepository)
       : super(RepositoriesLoadingState()) {
-    on<LoadRepositoriesEvent>((event, emit) async {
+    on<SearchRepositoriesEvent>((event, emit) async {
       emit(RepositoriesLoadingState());
       try {
         final repositories =
-            await _repositoriesRepository.getRepositoriesByUser('rafa0206');
+            await _repositoriesRepository.getRepositoriesByUser(event.query);
         emit(RepositoriesLoadedState(repositories));
       } catch (e) {
         emit(RepositoriesErrorState(e.toString()));

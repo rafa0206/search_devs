@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:search_devs/blocs/dev_bloc.dart';
+import 'package:search_devs/blocs/dev_events.dart';
+import 'package:search_devs/blocs/repositories_bloc.dart';
+import 'package:search_devs/blocs/repositories_events.dart';
 import 'package:search_devs/ui/components/search_button.dart';
 import 'package:search_devs/ui/responsive_layout/responsive_layout.dart';
 import 'package:search_devs/utils/constants/theme.dart';
@@ -111,8 +116,12 @@ class SearchForm extends StatelessWidget {
                   visible: !isDevView,
                   child: SearchButton(
                     onTap: () {
+                      final query = controller.text;
+                      if (query.isNotEmpty) {
+                        BlocProvider.of<DevBloc>(context).add(SearchDevEvent(query));
+                        BlocProvider.of<RepositoriesBloc>(context).add(SearchRepositoriesEvent(query));
+                      }
                       Modular.to.navigate('/profile');
-
                     },
                   ),
                 ),

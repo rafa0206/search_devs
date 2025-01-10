@@ -47,7 +47,12 @@ class DevLayout extends StatelessWidget {
                       if (state is DevLoadedState) {
                         return DevInfo(dev: state.dev);
                       }
-                      return Container();
+                      return const Padding(
+                        padding: EdgeInsets.all(30.0),
+                        child: Center(child: Text('Ops, não há nenhum dev no github com este username', textAlign: TextAlign.center, style: TextStyle(
+                          fontSize: 20
+                        ),)),
+                      );
                     }),
                     Expanded(
                       child: Padding(

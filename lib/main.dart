@@ -31,13 +31,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<DevBloc>(
             create: (context) => DevBloc(
               RepositoryProvider.of<DevApi>(context),
-            // )..add(LoadDevEvent()),
             )..add(const SearchDevEvent(''),),
           ),
           BlocProvider<RepositoriesBloc>(
             create: (context) => RepositoriesBloc(
               RepositoryProvider.of<RepositoriesApi>(context),
-            )..add(LoadRepositoriesEvent()),
+            )..add(const SearchRepositoriesEvent('')),
           ),
         ],
         child: MaterialApp.router(

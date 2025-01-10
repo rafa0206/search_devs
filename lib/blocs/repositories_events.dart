@@ -4,7 +4,9 @@ abstract class RepositoriesEvent extends Equatable {
   const RepositoriesEvent();
 }
 
-class LoadRepositoriesEvent extends RepositoriesEvent {
+class SearchRepositoriesEvent extends RepositoriesEvent {
+  final String query;
+  const SearchRepositoriesEvent(this.query);
 
   @override
   List<Object?> get props => [];

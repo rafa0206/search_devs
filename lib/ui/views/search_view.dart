@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:search_devs/blocs/dev_bloc.dart';
 import 'package:search_devs/blocs/dev_events.dart';
-import 'package:search_devs/controller/dev_controller.dart';
-import 'package:search_devs/controller/repositories_controller.dart';
+import 'package:search_devs/blocs/repositories_bloc.dart';
+import 'package:search_devs/blocs/repositories_events.dart';
 import 'package:search_devs/ui/components/search_button.dart';
 import 'package:search_devs/ui/components/search_form.dart';
 import 'package:search_devs/ui/components/title_search_devs.dart';
@@ -15,8 +15,6 @@ class SearchView extends StatelessWidget {
   SearchView({super.key});
 
   final _searchController = TextEditingController();
-  final _devController = DevController();
-  final _repositoriesController = RepositoriesController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,6 @@ class SearchView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
-              // spacing: ResponsiveLayout.isPhone(context) ? 32 : 76,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const TitleSearchDevs(isDevView: false),
@@ -56,10 +53,8 @@ class SearchView extends StatelessWidget {
                       final query = _searchController.text;
                       if (query.isNotEmpty) {
                         BlocProvider.of<DevBloc>(context).add(SearchDevEvent(query));
+                        BlocProvider.of<RepositoriesBloc>(context).add(SearchRepositoriesEvent(query));
                       }
-                      // _devController.getDev(_searchController.text);
-                      _repositoriesController
-                          .getRepositoriesByUser(_searchController.text);
                       Modular.to.navigate('/profile');
                     },
                   ),
