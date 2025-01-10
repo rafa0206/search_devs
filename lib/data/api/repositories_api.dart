@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:search_devs/domain/entities/repository.dart';
 
 class RepositoriesApi {
-  // Future<List<Repository>?> getRepositoriesByUser(String userName) async {
   Future<List<Repository>> getRepositoriesByUser(String userName) async {
     String url = 'https://api.github.com/users/$userName/repos';
     Response response = await get(Uri.parse(url));
