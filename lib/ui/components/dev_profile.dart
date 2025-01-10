@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:search_devs/domain/entities/dev.dart';
 import 'package:search_devs/utils/constants/theme.dart';
 
 class DevProfile extends StatelessWidget {
-  const DevProfile({super.key});
+  final Dev dev;
+
+  const DevProfile({
+    super.key,
+    required this.dev,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
         CircleAvatar(
+          backgroundImage:
+          NetworkImage(dev.photo!),
+          backgroundColor: Colors.transparent,
           radius: 24,
-          backgroundColor: Colors.blue,
         ),
-        SizedBox(
+        const SizedBox(
           width: 16,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            dev.name != null ?
             Text(
-              'Nome Sobrenome',
+              dev.name!,
               style: AppTheme.titleTextStyle,
-            ),
-            Text(
-              '@apelido',
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: 'Into',
-                color: AppTheme.mainDarkGrey,
-              ),
-            ),
+            ) : const SizedBox.shrink(),
+            Text('@${dev.nickname}',
+                style: AppTheme.iconTextStyle
+                    .copyWith(color: AppTheme.mainDarkGrey)),
           ],
         )
       ],

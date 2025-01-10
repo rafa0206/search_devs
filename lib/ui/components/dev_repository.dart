@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:search_devs/domain/entities/repository.dart';
 import 'package:search_devs/utils/constants/theme.dart';
 
 class DevRepository extends StatelessWidget {
-  const DevRepository({super.key});
+  final Repository repository;
+
+  const DevRepository({
+    super.key,
+    required this.repository
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,7 @@ class DevRepository extends StatelessWidget {
             ),
           ),
         ),
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,47 +33,47 @@ class DevRepository extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Nome Repositório',
+                  repository.name,
                   style: AppTheme.titleTextStyle,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 18,
                 ),
                 Text(
-                  'Descricão Repositório Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                  repository.description ?? '',
                   style: AppTheme.defaultTextStyle,
                 ),
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 18.0),
+              padding: const EdgeInsets.symmetric(vertical: 18.0),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     CupertinoIcons.star,
                     size: 18,
                     color: AppTheme.mainGrey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Text(
-                    '100',
+                    repository.points.toString(),
                     style: AppTheme.iconTextStyle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
-                  Icon(
+                  const Icon(
                     Icons.circle,
                     size: 5,
                     color: AppTheme.mainGrey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Text(
-                    'Atualizado há 2 dias',
+                    repository.update,
                     style: AppTheme.iconTextStyle,
                   ),
                 ],

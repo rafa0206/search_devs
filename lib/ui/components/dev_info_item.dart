@@ -3,7 +3,7 @@ import 'package:search_devs/utils/constants/theme.dart';
 
 class DevInfoItem extends StatelessWidget {
   final IconData iconData;
-  final String textItem;
+  final String? textItem;
   final double? iconSize;
 
   const DevInfoItem(
@@ -14,7 +14,7 @@ class DevInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return textItem != null ? Row(
       children: [
         Icon(
           iconData,
@@ -25,10 +25,10 @@ class DevInfoItem extends StatelessWidget {
           width: 8,
         ),
         Text(
-          textItem,
+          textItem!,
           style: AppTheme.iconTextStyle,
         ),
       ],
-    );
+    ) : const SizedBox.shrink();
   }
 }

@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:search_devs/domain/entities/dev.dart';
 import 'package:search_devs/ui/components/dev_info_item.dart';
 import 'package:search_devs/ui/components/dev_profile.dart';
 import 'package:search_devs/ui/responsive_layout/responsive_layout.dart';
 import 'package:search_devs/utils/constants/theme.dart';
 
 class DevInfo extends StatelessWidget {
+  final Dev dev;
+
   const DevInfo({
     super.key,
+    required this.dev
   });
 
   @override
@@ -18,13 +22,13 @@ class DevInfo extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppTheme.mainLightPurple,
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DevProfile(),
-                  SizedBox(
+                  DevProfile(dev: dev),
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -32,22 +36,22 @@ class DevInfo extends StatelessWidget {
                     children: [
                       DevInfoItem(
                         iconData: CupertinoIcons.group,
-                        textItem: '240 seguidores',
+                        textItem: '${dev.followers} seguidores',
                         iconSize: 28,
                       ),
                       DevInfoItem(
                         iconData: CupertinoIcons.heart,
-                        textItem: '50 seguindo',
+                        textItem: '${dev.following} seguindo',
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
-                      'Dev Descrição Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                      dev.description ?? '',
                       style: AppTheme.defaultTextStyle),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -55,20 +59,20 @@ class DevInfo extends StatelessWidget {
                     children: [
                       DevInfoItem(
                         iconData: FontAwesomeIcons.building,
-                        textItem: 'Empresa',
+                        textItem: dev.company,
                         iconSize: 16,
                       ),
-                      DevInfoItem(
+                       DevInfoItem(
                         iconData: CupertinoIcons.placemark,
-                        textItem: 'Cidade',
+                        textItem: dev.location,
                       ),
                       DevInfoItem(
                         iconData: Icons.mail_outline,
-                        textItem: 'nome@email.com.br',
+                        textItem: dev.email,
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -76,10 +80,10 @@ class DevInfo extends StatelessWidget {
                     children: [
                       DevInfoItem(
                           iconData: CupertinoIcons.link,
-                          textItem: 'www.nome.com.br'),
+                          textItem: dev.link),
                       DevInfoItem(
                           iconData: FontAwesomeIcons.twitter,
-                          textItem: '@nome'),
+                          textItem: dev.twitter),
                     ],
                   ),
                 ],
@@ -92,72 +96,72 @@ class DevInfo extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppTheme.mainWhite,
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 2,
                   ),
-                  DevProfile(),
-                  SizedBox(
+                  DevProfile(dev: dev),
+                  const SizedBox(
                     height: 18,
                   ),
                   Text(
-                    'Dev Descrição Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    dev.description ?? '',
                     style: AppTheme.defaultTextStyle,
                     maxLines: 4,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 22,
                   ),
                   DevInfoItem(
                     iconData: CupertinoIcons.group,
-                    textItem: '240 seguidores',
+                    textItem: '${dev.followers} seguidores',
                     iconSize: 28,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   DevInfoItem(
                     iconData: CupertinoIcons.heart,
-                    textItem: '50 seguindo',
+                    textItem: '${dev.following} seguindo',
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 22,
                   ),
                   DevInfoItem(
                     iconData: FontAwesomeIcons.building,
-                    textItem: 'Empresa',
+                    textItem: dev.company,
                     iconSize: 16,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   DevInfoItem(
                     iconData: CupertinoIcons.placemark,
-                    textItem: 'Cidade',
+                    textItem: dev.location,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   DevInfoItem(
                     iconData: Icons.mail_outline,
-                    textItem: 'nome@email.com.br',
+                    textItem: dev.email,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   DevInfoItem(
                       iconData: CupertinoIcons.link,
-                      textItem: 'www.nome.com.br'),
-                  SizedBox(
+                      textItem: dev.link),
+                  const SizedBox(
                     height: 12,
                   ),
                   DevInfoItem(
-                      iconData: FontAwesomeIcons.twitter, textItem: '@nome'),
-                  SizedBox(
+                      iconData: FontAwesomeIcons.twitter, textItem: dev.twitter),
+                  const SizedBox(
                     height: 8,
                   ),
                 ],

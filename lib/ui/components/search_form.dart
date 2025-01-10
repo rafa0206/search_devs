@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:search_devs/ui/components/search_button.dart';
 import 'package:search_devs/ui/responsive_layout/responsive_layout.dart';
 import 'package:search_devs/utils/constants/theme.dart';
 
 class SearchForm extends StatelessWidget {
   final bool isDevView;
+  final TextEditingController controller;
 
   const SearchForm({
     super.key,
     required this.isDevView,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout.isPhone(context)
         ? TextFormField(
+            controller: controller,
             cursorColor: AppTheme.mainMediumGrey,
             decoration: InputDecoration(
               disabledBorder: const OutlineInputBorder(
@@ -55,6 +59,7 @@ class SearchForm extends StatelessWidget {
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 592),
                     child: TextFormField(
+                      controller: controller,
                       cursorColor: isDevView
                           ? AppTheme.mainPurple
                           : AppTheme.mainMediumGrey,
@@ -105,7 +110,10 @@ class SearchForm extends StatelessWidget {
                 Visibility(
                   visible: !isDevView,
                   child: SearchButton(
-                    onTap: () {},
+                    onTap: () {
+                      Modular.to.navigate('/profile');
+
+                    },
                   ),
                 ),
               ],
