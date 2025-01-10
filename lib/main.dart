@@ -32,19 +32,16 @@ class MyApp extends StatelessWidget {
             create: (context) => DevBloc(
               RepositoryProvider.of<DevApi>(context),
             )..add(LoadDevEvent()),
-            // child: DevLayout(),
           ),
           BlocProvider<RepositoriesBloc>(
             create: (context) => RepositoriesBloc(
               RepositoryProvider.of<RepositoriesApi>(context),
             )..add(LoadRepositoriesEvent()),
-            // child: DevLayout(),
           ),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          // theme: ThemeData(),
           routerDelegate: Modular.routerDelegate,
           routeInformationParser: Modular.routeInformationParser,
         ),
