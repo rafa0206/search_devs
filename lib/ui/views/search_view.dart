@@ -24,19 +24,37 @@ class SearchView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
-              spacing: ResponsiveLayout.isPhone(context) ? 32 : 76,
+              // spacing: ResponsiveLayout.isPhone(context) ? 32 : 76,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const TitleSearchDevs(isDevView: false),
-                SearchForm(isDevView: false, controller: _searchController,),
+                ResponsiveLayout.isPhone(context)
+                    ? const SizedBox(
+                        height: 32,
+                      )
+                    : const SizedBox(
+                        height: 76,
+                      ),
+                SearchForm(
+                  isDevView: false,
+                  controller: _searchController,
+                ),
+                ResponsiveLayout.isPhone(context)
+                    ? const SizedBox(
+                        height: 32,
+                      )
+                    : const SizedBox(
+                        height: 76,
+                      ),
                 Visibility(
                   visible: ResponsiveLayout.isPhone(context),
                   child: SearchButton(
-                      onTap: (){
-                        _devController.getDev(_searchController.text);
-                        _repositoriesController.getRepositoriesByUser(_searchController.text);
-                        Modular.to.navigate('/profile');
-                      },
+                    onTap: () {
+                      _devController.getDev(_searchController.text);
+                      _repositoriesController
+                          .getRepositoriesByUser(_searchController.text);
+                      Modular.to.navigate('/profile');
+                    },
                   ),
                 ),
               ],

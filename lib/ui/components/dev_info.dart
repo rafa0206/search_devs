@@ -32,12 +32,15 @@ class DevInfo extends StatelessWidget {
                     height: 20,
                   ),
                   Row(
-                    spacing: 16,
+                    // spacing: 16,
                     children: [
                       DevInfoItem(
                         iconData: CupertinoIcons.group,
                         textItem: '${dev.followers} seguidores',
                         iconSize: 28,
+                      ),
+                      const SizedBox(
+                        width: 16,
                       ),
                       DevInfoItem(
                         iconData: CupertinoIcons.heart,
