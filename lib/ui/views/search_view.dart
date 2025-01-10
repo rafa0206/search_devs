@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:search_devs/blocs/dev_bloc.dart';
+import 'package:search_devs/blocs/dev_events.dart';
 import 'package:search_devs/controller/dev_controller.dart';
 import 'package:search_devs/controller/repositories_controller.dart';
 import 'package:search_devs/ui/components/search_button.dart';
@@ -50,7 +53,11 @@ class SearchView extends StatelessWidget {
                   visible: ResponsiveLayout.isPhone(context),
                   child: SearchButton(
                     onTap: () {
-                      _devController.getDev(_searchController.text);
+                      final query = _searchController.text;
+                      if (query.isNotEmpty) {
+                        BlocProvider.of<DevBloc>(context).add(SearchDevEvent(query));
+                      }
+                      // _devController.getDev(_searchController.text);
                       _repositoriesController
                           .getRepositoriesByUser(_searchController.text);
                       Modular.to.navigate('/profile');

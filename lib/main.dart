@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<DevBloc>(
             create: (context) => DevBloc(
               RepositoryProvider.of<DevApi>(context),
-            )..add(LoadDevEvent()),
+            // )..add(LoadDevEvent()),
+            )..add(const SearchDevEvent(''),),
           ),
           BlocProvider<RepositoriesBloc>(
             create: (context) => RepositoriesBloc(

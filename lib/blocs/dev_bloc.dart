@@ -7,14 +7,15 @@ class DevBloc extends Bloc<DevEvent, DevState> {
   final DevApi _devRepository;
 
   DevBloc(this._devRepository) : super(DevLoadingState()) {
-    on<LoadDevEvent>((event, emit) async {
+    on<SearchDevEvent>((event, emit) async {
       emit(DevLoadingState());
       try {
-        final dev = await _devRepository.getDev('rafa0206');
+        final dev = await _devRepository.getDev(event.query);
         emit(DevLoadedState(dev));
       } catch (e) {
         emit(DevErrorState(e.toString()));
       }
     });
   }
+
 }
