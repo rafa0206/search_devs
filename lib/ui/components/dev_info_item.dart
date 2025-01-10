@@ -14,13 +14,14 @@ class DevInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return textItem != null ? Row(
+    return textItem == null ?  const SizedBox.shrink() : Row(
       children: [
+        textItem != null ?
         Icon(
           iconData,
           size: iconSize ?? 20,
           color: AppTheme.mainGrey,
-        ),
+        ) : const SizedBox.shrink(),
         const SizedBox(
           width: 8,
         ),
@@ -29,6 +30,6 @@ class DevInfoItem extends StatelessWidget {
           style: AppTheme.iconTextStyle,
         ),
       ],
-    ) : const SizedBox.shrink();
+    );
   }
 }
