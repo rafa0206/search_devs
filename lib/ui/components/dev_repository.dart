@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:search_devs/domain/entities/repository.dart';
 import 'package:search_devs/utils/constants/theme.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DevRepository extends StatelessWidget {
   final Repository repository;
@@ -73,7 +74,8 @@ class DevRepository extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    repository.update,
+                    // repository.update,
+                    timeago.format(DateTime.parse(repository.update), locale: 'pt_BR'),
                     style: AppTheme.iconTextStyle,
                   ),
                 ],
@@ -85,3 +87,7 @@ class DevRepository extends StatelessWidget {
     );
   }
 }
+
+// String timeUntil(DateTime date) {
+//   return timeago.format(date, locale: locale, allowFromNow: true);
+// }

@@ -8,8 +8,11 @@ import 'package:search_devs/blocs/repositories_events.dart';
 import 'package:search_devs/data/api/dev_api.dart';
 import 'package:search_devs/data/api/repositories_api.dart';
 import 'package:search_devs/routes/app_module.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() {
+  timeago.setLocaleMessages('pt_BR', timeago.PtBrMessages());
+  timeago.setLocaleMessages('pt_BR_short', timeago.PtBrShortMessages());
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
 }
 

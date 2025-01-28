@@ -64,6 +64,20 @@ class SearchForm extends StatelessWidget {
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 592),
                     child: TextFormField(
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: () {
+                        if(isDevView){
+                          final query = controller.text;
+                          if (query.isNotEmpty) {
+                            BlocProvider.of<DevBloc>(context).add(SearchDevEvent(query));
+                            BlocProvider.of<RepositoriesBloc>(context).add(SearchRepositoriesEvent(query));
+                          }
+                          FocusScope.of(context).unfocus();
+                          controller.clear();
+                        }else{
+                          null;
+                        }
+                      },
                       controller: controller,
                       cursorColor: isDevView
                           ? AppTheme.mainPurple

@@ -10,7 +10,7 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.child('/', child: (context) => SearchView());
-    r.child('/profile', child: (context) => const DevView());
+    r.child('/profile', child: (context) => DevView());
   }
 
 }

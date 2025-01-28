@@ -14,7 +14,7 @@ class DevInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return textItem == null ?  const SizedBox.shrink() : Row(
+    return textItem == null || textItem == '' ? const SizedBox.shrink() : Row(
       children: [
         textItem != null ?
         Icon(
