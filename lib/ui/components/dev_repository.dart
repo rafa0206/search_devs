@@ -74,7 +74,6 @@ class DevRepository extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    // repository.update,
                     timeago.format(DateTime.parse(repository.update), locale: 'pt_BR'),
                     style: AppTheme.iconTextStyle,
                   ),
@@ -87,7 +86,3 @@ class DevRepository extends StatelessWidget {
     );
   }
 }
-
-// String timeUntil(DateTime date) {
-//   return timeago.format(date, locale: locale, allowFromNow: true);
-// }

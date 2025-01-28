@@ -18,8 +18,6 @@ dependencies:
   equatable: ^2.0.7
   flutter_modular: ^6.3.4
   timeago: ^3.7.0
-#  timeago: ^3.7.0
-#  timeago: ^3.7.0
 
 dev_dependencies:
   flutter_test:
