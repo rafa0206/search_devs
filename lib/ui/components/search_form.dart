@@ -5,18 +5,33 @@ import 'package:search_devs/blocs/dev_bloc.dart';
 import 'package:search_devs/blocs/dev_events.dart';
 import 'package:search_devs/blocs/repositories_bloc.dart';
 import 'package:search_devs/blocs/repositories_events.dart';
+import 'package:search_devs/ui/components/filter_button.dart';
+import 'package:search_devs/ui/components/filter_dialog.dart';
 import 'package:search_devs/ui/components/search_button.dart';
 import 'package:search_devs/ui/responsive_layout/responsive_layout.dart';
 import 'package:search_devs/utils/constants/theme.dart';
 
+//ignore: must_be_immutable
 class SearchForm extends StatelessWidget {
   final bool isDevView;
   final TextEditingController controller;
+  String? selectType;
+  String? selectSort;
+  String? selectDirection;
+  List<String>? types;
+  List<String>? sorts;
+  List<String>? directions;
 
-  const SearchForm({
-    super.key,
+  SearchForm({
     required this.isDevView,
     required this.controller,
+    this.selectType,
+    this.selectSort,
+    this.selectDirection,
+    this.types,
+    this.sorts,
+    this.directions,
+    super.key,
   });
 
   @override
@@ -42,16 +57,16 @@ class SearchForm extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                    color: AppTheme.mainMediumGrey,
-                    width: 1),
+                borderSide:
+                    const BorderSide(color: AppTheme.mainMediumGrey, width: 1),
                 borderRadius: BorderRadius.circular(4),
               ),
               labelStyle: const TextStyle(color: AppTheme.mainMediumGrey),
               hintText: 'Search',
               hintStyle: const TextStyle(color: AppTheme.mainMediumGrey),
               labelText: 'Search',
-              prefixIcon: const Icon(Icons.search, size: 24, color: AppTheme.mainMediumGrey),
+              prefixIcon: const Icon(Icons.search,
+                  size: 24, color: AppTheme.mainMediumGrey),
             ),
           )
         : Flexible(
@@ -66,15 +81,21 @@ class SearchForm extends StatelessWidget {
                     child: TextFormField(
                       textInputAction: TextInputAction.done,
                       onEditingComplete: () {
-                        if(isDevView){
+                        if (isDevView) {
                           final query = controller.text;
                           if (query.isNotEmpty) {
-                            BlocProvider.of<DevBloc>(context).add(SearchDevEvent(query));
-                            BlocProvider.of<RepositoriesBloc>(context).add(SearchRepositoriesEvent(query));
+                            BlocProvider.of<DevBloc>(context)
+                                .add(SearchDevEvent(query));
+                            BlocProvider.of<RepositoriesBloc>(context).add(
+                                SearchRepositoriesEvent(
+                                    query: query,
+                                    type: selectType,
+                                    sort: selectSort,
+                                    direction: selectDirection));
                           }
                           FocusScope.of(context).unfocus();
                           controller.clear();
-                        }else{
+                        } else {
                           null;
                         }
                       },
@@ -132,10 +153,70 @@ class SearchForm extends StatelessWidget {
                     onTap: () {
                       final query = controller.text;
                       if (query.isNotEmpty) {
-                        BlocProvider.of<DevBloc>(context).add(SearchDevEvent(query));
-                        BlocProvider.of<RepositoriesBloc>(context).add(SearchRepositoriesEvent(query));
+                        BlocProvider.of<DevBloc>(context)
+                            .add(SearchDevEvent(query));
+                        BlocProvider.of<RepositoriesBloc>(context).add(
+                          SearchRepositoriesEvent(
+                            query: query,
+                            type: selectType,
+                            sort: selectSort,
+                            direction: selectDirection,
+                          ),
+                        );
                       }
                       Modular.to.navigate('/profile');
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Visibility(
+                  visible: !ResponsiveLayout.isPhone(context),
+                  child: FilterButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ConstrainedBox(
+                            constraints: const BoxConstraints(maxHeight: 500.0),
+                            child: StatefulBuilder(
+                              builder: (context, setState) {
+                                return FilterDialog(
+                                  (value) {
+                                    setState(() {
+                                      selectType = value;
+                                    });
+                                  },
+                                  (value) {
+                                    setState(() {
+                                      selectSort = value;
+                                    });
+                                  },
+                                  (value) {
+                                    setState(() {
+                                      selectDirection = value;
+                                    });
+                                  },
+                                  () {
+                                    selectType = null;
+                                    selectSort = null;
+                                    selectDirection = null;
+                                    Navigator.of(context)
+                                        .pop(); // Fecha o diálogo
+                                  },
+                                  selectType,
+                                  selectSort,
+                                  selectDirection,
+                                  types ?? [],
+                                  sorts ?? [],
+                                  directions ?? [],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
                     },
                   ),
                 ),

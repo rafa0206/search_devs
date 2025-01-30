@@ -21,20 +21,20 @@ class AppTheme {
 
   static const titleTextStyle = TextStyle(
     fontSize: 20,
-    fontFamily: 'Into',
+    fontFamily: 'Inter',
     color: mainBlackBlue,
     fontWeight: FontWeight.w700,
   );
 
   static const defaultTextStyle = TextStyle(
     fontSize: 16,
-    fontFamily: 'Into',
+    fontFamily: 'Inter',
     color: mainGrey,
   );
 
   static const iconTextStyle = TextStyle(
     fontSize: 14,
-    fontFamily: 'Into',
+    fontFamily: 'Inter',
     color: mainGrey,
   );
 

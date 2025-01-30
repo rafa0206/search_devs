@@ -12,7 +12,7 @@ class RepositoriesBloc extends Bloc<RepositoriesEvent, RepositoriesState> {
       emit(RepositoriesLoadingState());
       try {
         final repositories =
-            await _repositoriesRepository.getRepositoriesByUser(event.query);
+            await _repositoriesRepository.getRepositoriesByUser(event.query, type: event.type, sort: event.sort, direction: event.direction);
         emit(RepositoriesLoadedState(repositories));
       } catch (e) {
         emit(RepositoriesErrorState(e.toString()));

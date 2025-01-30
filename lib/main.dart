@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<RepositoriesBloc>(
             create: (context) => RepositoriesBloc(
               RepositoryProvider.of<RepositoriesApi>(context),
-            )..add(const SearchRepositoriesEvent('')),
+            )..add(const SearchRepositoriesEvent()),
           ),
         ],
         child: MaterialApp.router(
