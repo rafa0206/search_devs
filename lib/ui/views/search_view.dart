@@ -46,112 +46,198 @@ class _SearchViewState extends State<SearchView> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const TitleSearchDevs(isDevView: false),
-                ResponsiveLayout.isPhone(context)
-                    ? const SizedBox(
-                        height: 32,
-                      )
-                    : const SizedBox(
-                        height: 76,
-                      ),
-                SearchForm(
-                  isDevView: false,
-                  controller: _searchController,
-                  selectType: _selectType,
-                  selectSort: _selectSort,
-                  selectDirection: _selectDirection,
-                  types: _types,
-                  sorts: _sorts,
-                  directions: _directions,
-                ),
-                ResponsiveLayout.isPhone(context)
-                    ? const SizedBox(
-                        height: 32,
-                      )
-                    : const SizedBox(
-                        height: 76,
-                      ),
-                Visibility(
-                  visible: ResponsiveLayout.isPhone(context),
-                  child: Row(
+            child: ResponsiveLayout.isPhone(context)
+                ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SearchButton(
-                        onTap: () {
-                          final query = _searchController.text;
-                          if (query.isNotEmpty) {
-                            BlocProvider.of<DevBloc>(context)
-                                .add(SearchDevEvent(query));
-                            BlocProvider.of<RepositoriesBloc>(context).add(
-                                SearchRepositoriesEvent(
+                      const TitleSearchDevs(isDevView: false),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      SearchForm(
+                        isDevView: false,
+                        controller: _searchController,
+                        selectType: _selectType,
+                        selectSort: _selectSort,
+                        selectDirection: _selectDirection,
+                        types: _types,
+                        sorts: _sorts,
+                        directions: _directions,
+                      ),
+                      const SizedBox(
+                        height: 76,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SearchButton(
+                            onTap: () {
+                              final query = _searchController.text;
+                              if (query.isNotEmpty) {
+                                BlocProvider.of<DevBloc>(context)
+                                    .add(SearchDevEvent(query));
+                                BlocProvider.of<RepositoriesBloc>(context).add(
+                                  SearchRepositoriesEvent(
                                     query: query,
                                     type: _selectType,
                                     sort: _selectSort,
                                     direction: _selectDirection,
-                                ),
-                            );
-                          }
-                          Modular.to.navigate('/profile');
-                        },
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      FilterButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ConstrainedBox(
-                                  constraints:
-                                  const BoxConstraints(maxHeight: 500.0),
-                                  child: StatefulBuilder(
-                                    builder: (context, setState) {
-                                      return FilterDialog(
-                                            (value) {
-                                          setState(() {
-                                            _selectType = value;
-                                          });
-                                        },
-                                            (value) {
-                                          setState(() {
-                                            _selectSort = value;
-                                          });
-                                        },
-                                            (value) {
-                                          setState(() {
-                                            _selectDirection = value;
-                                          });
-                                        },
-                                            () {
-                                          _selectType = null;
-                                          _selectSort = null;
-                                          _selectDirection = null;
-                                          Navigator.of(context)
-                                              .pop(); // Fecha o diálogo
-                                        },
-                                        _selectType,
-                                        _selectSort,
-                                        _selectDirection,
-                                        _types,
-                                        _sorts,
-                                        _directions,
-                                      );
-                                    },
                                   ),
                                 );
+                              }
+                              Modular.to.navigate('/profile');
+                            },
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          FilterButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ConstrainedBox(
+                                    constraints:
+                                        const BoxConstraints(maxHeight: 500.0),
+                                    child: StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return FilterDialog(
+                                          (value) {
+                                            setState(() {
+                                              _selectType = value;
+                                            });
+                                          },
+                                          (value) {
+                                            setState(() {
+                                              _selectSort = value;
+                                            });
+                                          },
+                                          (value) {
+                                            setState(() {
+                                              _selectDirection = value;
+                                            });
+                                          },
+                                          () {
+                                            _selectType = null;
+                                            _selectSort = null;
+                                            _selectDirection = null;
+                                            Navigator.of(context)
+                                                .pop(); // Fecha o diálogo
+                                          },
+                                          _selectType,
+                                          _selectSort,
+                                          _selectDirection,
+                                          _types,
+                                          _sorts,
+                                          _directions,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const TitleSearchDevs(isDevView: false),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Flexible(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 592),
+                                child: SearchForm(
+                                  controller: _searchController,
+                                  isDevView: false,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 32,
+                            ),
+                            SearchButton(
+                              onTap: () {
+                                final query = _searchController.text;
+                                if (query.isNotEmpty) {
+                                  BlocProvider.of<DevBloc>(context)
+                                      .add(SearchDevEvent(query));
+                                  BlocProvider.of<RepositoriesBloc>(context).add(
+                                    SearchRepositoriesEvent(
+                                      query: query,
+                                      type: _selectType,
+                                      sort: _selectSort,
+                                      direction: _selectDirection,
+                                    ),
+                                  );
+                                }
+                                Modular.to.navigate('/profile');
                               },
-                            );
-                          },
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            FilterButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ConstrainedBox(
+                                      constraints:
+                                      const BoxConstraints(maxHeight: 500.0),
+                                      child: StatefulBuilder(
+                                        builder: (context, setState) {
+                                          return FilterDialog(
+                                                (value) {
+                                              setState(() {
+                                                _selectType = value;
+                                              });
+                                            },
+                                                (value) {
+                                              setState(() {
+                                                _selectSort = value;
+                                              });
+                                            },
+                                                (value) {
+                                              setState(() {
+                                                _selectDirection = value;
+                                              });
+                                            },
+                                                () {
+                                              _selectType = null;
+                                              _selectSort = null;
+                                              _selectDirection = null;
+                                              Navigator.of(context)
+                                                  .pop(); // Fecha o diálogo
+                                            },
+                                            _selectType,
+                                            _selectSort,
+                                            _selectDirection,
+                                            _types,
+                                            _sorts,
+                                            _directions,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
