@@ -9,9 +9,11 @@ class FilterDialog extends StatelessWidget {
   final String? _selectType;
   final String? _selectSort;
   final String? _selectDirection;
-  final List<String> _types;
-  final List<String> _sorts;
-  final List<String> _directions;
+  final List<String>? _types;
+  final List<String>? _sorts;
+  final List<String>? _directions;
+  final String? variavelTeste;
+  final void Function()? incrementValue;
 
   const FilterDialog(
       this._onChangeType,
@@ -24,26 +26,28 @@ class FilterDialog extends StatelessWidget {
       this._types,
       this._sorts,
       this._directions,
-      {super.key});
+
+      {super.key, this.variavelTeste, this.incrementValue,});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      title: Text(variavelTeste ?? 'variavel teste'),
       scrollable: true,
       actionsAlignment: MainAxisAlignment.center,
       content: Column(
         children: [
-          CustomDropdown('Type', _types, _onChangeType, _selectType),
-          CustomDropdown('Sort', _sorts, _onChangeSort, _selectSort),
+          CustomDropdown('Type', _types ?? [], _onChangeType, _selectType),
+          CustomDropdown('Sort', _sorts ?? [], _onChangeSort, _selectSort),
           CustomDropdown(
-              'Direction', _directions, _onChangeDirections, _selectDirection),
+              'Direction', _directions ?? [], _onChangeDirections, _selectDirection),
         ],
       ),
       actions: [
         TextButton(
           onPressed: _onCancelFilter,
           child: const Text(
-            'Cancel',
+            'Clear Filter',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 18,
@@ -55,7 +59,7 @@ class FilterDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: const Text(
-            'Apply',
+            'Apply Filter',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 18,

@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:search_devs/blocs/dev_bloc.dart';
 import 'package:search_devs/blocs/dev_events.dart';
+import 'package:search_devs/blocs/filter_bloc.dart';
+import 'package:search_devs/blocs/filter_events.dart';
+import 'package:search_devs/blocs/filter_states.dart';
 import 'package:search_devs/blocs/repositories_bloc.dart';
 import 'package:search_devs/blocs/repositories_events.dart';
 import 'package:search_devs/ui/components/filter_button.dart';
@@ -23,27 +26,12 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   final _searchController = TextEditingController();
 
-  String? _selectType;
-
-  String? _selectSort;
-
-  String? _selectDirection;
-
-  final List<String> _types = ['all', 'owner', 'member'];
-
-  final List<String> _sorts = ['created', 'updated', 'pushed', 'full_name'];
-
-  final List<String> _directions = [
-    'asc',
-    'desc',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.mainWhite,
-      body: SafeArea(
-        child: Center(
+      body: BlocBuilder<FilterBloc, FilterState>(builder: (context, state) {
+        return Center(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: ResponsiveLayout.isPhone(context)
@@ -57,12 +45,12 @@ class _SearchViewState extends State<SearchView> {
                       SearchForm(
                         isDevView: false,
                         controller: _searchController,
-                        selectType: _selectType,
-                        selectSort: _selectSort,
-                        selectDirection: _selectDirection,
-                        types: _types,
-                        sorts: _sorts,
-                        directions: _directions,
+                        selectType: state.selectType,
+                        selectSort: state.selectSort,
+                        selectDirection: state.selectDirection,
+                        types: state.types,
+                        sorts: state.sorts,
+                        directions: state.directions,
                       ),
                       const SizedBox(
                         height: 76,
@@ -79,9 +67,9 @@ class _SearchViewState extends State<SearchView> {
                                 BlocProvider.of<RepositoriesBloc>(context).add(
                                   SearchRepositoriesEvent(
                                     query: query,
-                                    type: _selectType,
-                                    sort: _selectSort,
-                                    direction: _selectDirection,
+                                    type: state.selectType,
+                                    sort: state.selectSort,
+                                    direction: state.selectDirection,
                                   ),
                                 );
                               }
@@ -99,38 +87,42 @@ class _SearchViewState extends State<SearchView> {
                                   return ConstrainedBox(
                                     constraints:
                                         const BoxConstraints(maxHeight: 500.0),
-                                    child: StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return FilterDialog(
-                                          (value) {
-                                            setState(() {
-                                              _selectType = value;
-                                            });
-                                          },
-                                          (value) {
-                                            setState(() {
-                                              _selectSort = value;
-                                            });
-                                          },
-                                          (value) {
-                                            setState(() {
-                                              _selectDirection = value;
-                                            });
-                                          },
-                                          () {
-                                            _selectType = null;
-                                            _selectSort = null;
-                                            _selectDirection = null;
-                                            Navigator.of(context)
-                                                .pop(); // Fecha o diálogo
-                                          },
-                                          _selectType,
-                                          _selectSort,
-                                          _selectDirection,
-                                          _types,
-                                          _sorts,
-                                          _directions,
-                                        );
+                                    child: BlocBuilder<FilterBloc, FilterState>(
+                                      builder: (context, state) {
+                                        return FilterDialog((value) {
+                                          BlocProvider.of<FilterBloc>(context)
+                                              .add(FilterUpdateEvent(
+                                                  selectType: value,
+                                                  selectSort: state.selectSort,
+                                                  selectDirection:
+                                                      state.selectDirection));
+                                        }, (value) {
+                                          BlocProvider.of<FilterBloc>(context)
+                                              .add(FilterUpdateEvent(
+                                                  selectType: state.selectType,
+                                                  selectSort: value,
+                                                  selectDirection:
+                                                      state.selectDirection));
+                                        }, (value) {
+                                          BlocProvider.of<FilterBloc>(context)
+                                              .add(
+                                            FilterUpdateEvent(
+                                                selectType: state.selectType,
+                                                selectSort: state.selectSort,
+                                                selectDirection: value),
+                                          );
+                                        }, () {
+                                          BlocProvider.of<FilterBloc>(context)
+                                              .add(const FilterUpdateEvent());
+                                          Navigator.of(context)
+                                              .pop(); // Fecha o diálogo
+                                        },
+                                            state.selectType,
+                                            state.selectSort,
+                                            state.selectDirection,
+                                            state.types,
+                                            state.sorts,
+                                            state.directions);
                                       },
                                     ),
                                   );
@@ -155,7 +147,8 @@ class _SearchViewState extends State<SearchView> {
                           children: [
                             Flexible(
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 592),
+                                constraints:
+                                    const BoxConstraints(maxWidth: 592),
                                 child: SearchForm(
                                   controller: _searchController,
                                   isDevView: false,
@@ -171,12 +164,13 @@ class _SearchViewState extends State<SearchView> {
                                 if (query.isNotEmpty) {
                                   BlocProvider.of<DevBloc>(context)
                                       .add(SearchDevEvent(query));
-                                  BlocProvider.of<RepositoriesBloc>(context).add(
+                                  BlocProvider.of<RepositoriesBloc>(context)
+                                      .add(
                                     SearchRepositoriesEvent(
                                       query: query,
-                                      type: _selectType,
-                                      sort: _selectSort,
-                                      direction: _selectDirection,
+                                      type: state.selectType,
+                                      sort: state.selectSort,
+                                      direction: state.selectDirection,
                                     ),
                                   );
                                 }
@@ -192,42 +186,53 @@ class _SearchViewState extends State<SearchView> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return ConstrainedBox(
-                                      constraints:
-                                      const BoxConstraints(maxHeight: 500.0),
-                                      child: StatefulBuilder(
-                                        builder: (context, setState) {
-                                          return FilterDialog(
-                                                (value) {
-                                              setState(() {
-                                                _selectType = value;
-                                              });
-                                            },
-                                                (value) {
-                                              setState(() {
-                                                _selectSort = value;
-                                              });
-                                            },
-                                                (value) {
-                                              setState(() {
-                                                _selectDirection = value;
-                                              });
-                                            },
-                                                () {
-                                              _selectType = null;
-                                              _selectSort = null;
-                                              _selectDirection = null;
-                                              Navigator.of(context)
-                                                  .pop(); // Fecha o diálogo
-                                            },
-                                            _selectType,
-                                            _selectSort,
-                                            _selectDirection,
-                                            _types,
-                                            _sorts,
-                                            _directions,
-                                          );
-                                        },
-                                      ),
+                                      constraints: const BoxConstraints(
+                                          maxHeight: 500.0),
+                                      child:
+                                          BlocBuilder<FilterBloc, FilterState>(
+                                              builder: (context, state) {
+                                        return FilterDialog(
+                                          (value) {
+                                            BlocProvider.of<FilterBloc>(context)
+                                                .add(FilterUpdateEvent(
+                                                    selectType: value,
+                                                    selectSort:
+                                                        state.selectSort,
+                                                    selectDirection:
+                                                        state.selectDirection));
+                                          },
+                                          (value) {
+                                            BlocProvider.of<FilterBloc>(context)
+                                                .add(FilterUpdateEvent(
+                                                    selectType:
+                                                        state.selectType,
+                                                    selectSort: value,
+                                                    selectDirection:
+                                                        state.selectDirection));
+                                          },
+                                          (value) {
+                                            BlocProvider.of<FilterBloc>(context)
+                                                .add(FilterUpdateEvent(
+                                                    selectType:
+                                                        state.selectType,
+                                                    selectSort:
+                                                        state.selectSort,
+                                                    selectDirection: value));
+                                          },
+                                          () {
+                                            BlocProvider.of<FilterBloc>(context)
+                                                .add(const FilterUpdateEvent());
+                                            Navigator.of(context)
+                                                .pop(); // Fecha o diálogo
+                                          },
+                                          state.selectType,
+                                          state.selectSort,
+                                          state.selectDirection,
+                                          state.types,
+                                          state.sorts,
+                                          state.directions,
+                                        );
+                                      }),
                                     );
                                   },
                                 );
@@ -239,8 +244,8 @@ class _SearchViewState extends State<SearchView> {
                     ],
                   ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

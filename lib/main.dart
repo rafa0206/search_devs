@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:search_devs/blocs/dev_bloc.dart';
 import 'package:search_devs/blocs/dev_events.dart';
+import 'package:search_devs/blocs/filter_bloc.dart';
 import 'package:search_devs/blocs/repositories_bloc.dart';
 import 'package:search_devs/blocs/repositories_events.dart';
 import 'package:search_devs/data/api/dev_api.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
               RepositoryProvider.of<RepositoriesApi>(context),
             )..add(const SearchRepositoriesEvent()),
           ),
+          BlocProvider<FilterBloc>(create: (context) => FilterBloc(),)
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
